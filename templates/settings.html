@@ -1,0 +1,276 @@
+
+{% extends "base.html" %}
+
+{% block title %}Settings | ScamGuard{% endblock %}
+
+{% block extra_css %}
+<style>
+    * {
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
+
+    body {
+        background: var(--page-bg);
+        color: var(--text-color);
+    }
+
+    .navbar {
+        background: var(--navbar-bg);
+        padding: 20px 6%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .navbar h2 {
+        color: var(--accent-color);
+    }
+
+    .nav-links a {
+        color: var(--secondary-text);
+        text-decoration: none;
+        margin-left: 20px;
+        font-size: 14px;
+    }
+
+    .nav-links a:hover {
+        color: var(--accent-color);
+    }
+
+    .container {
+        max-width: 850px;
+        margin: 50px auto;
+        padding: 20px;
+    }
+
+    h1 {
+        margin-bottom: 10px;
+        color: var(--text-color);
+    }
+
+    .subtitle {
+        color: var(--muted-color);
+        margin-bottom: 30px;
+    }
+
+    .card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 20px;
+    }
+
+    .card h2 {
+        color: var(--accent-color);
+        margin-bottom: 20px;
+        font-size: 20px;
+    }
+
+    .info {
+        margin: 15px 0;
+        color: var(--secondary-text);
+        overflow-wrap: anywhere;
+    }
+
+    .info strong {
+        display: inline-block;
+        width: 130px;
+        color: var(--text-color);
+    }
+
+    .status {
+        color: #16a34a;
+        font-weight: bold;
+    }
+
+    .btn {
+        display: inline-block;
+        background: #0284c7;
+        color: white;
+        padding: 11px 20px;
+        border: none;
+        border-radius: 7px;
+        text-decoration: none;
+        margin-top: 12px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .btn:hover {
+        background: #0369a1;
+    }
+
+    .logout {
+        background: #dc2626;
+    }
+
+    .logout:hover {
+        background: #b91c1c;
+    }
+
+    .password-form label {
+        display: block;
+        color: var(--secondary-text);
+        margin: 15px 0 7px;
+        font-size: 14px;
+    }
+
+    .password-form input {
+        width: 100%;
+        padding: 12px;
+        border-radius: 7px;
+        border: 1px solid var(--border-color);
+        background: var(--inner-bg);
+        color: var(--text-color);
+        outline: none;
+        font-size: 14px;
+    }
+
+    .password-form input:focus {
+        border-color: var(--accent-color);
+    }
+
+    .hint {
+        color: var(--muted-color);
+        font-size: 12px;
+        margin-top: 10px;
+    }
+
+    @media(max-width: 600px) {
+        .nav-links a {
+            margin-left: 8px;
+        }
+
+        .container {
+            margin: 25px auto;
+        }
+
+        .info strong {
+            width: 105px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<nav class="navbar">
+    <h2>🛡️ SCAMGUARD</h2>
+
+    <div class="nav-links">
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('my_scam_reports') }}">My Reports</a>
+        <a href="{{ url_for('settings') }}">Settings</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+</nav>
+
+<div class="container">
+
+    <h1>⚙️ Account Settings</h1>
+    <p class="subtitle">Manage your ScamGuard account information.</p>
+
+    <div class="card">
+        <h2>👤 Profile Information</h2>
+
+        <p class="info">
+            <strong>Username:</strong>
+            {{ current_user.username }}
+        </p>
+
+        <p class="info">
+            <strong>Email:</strong>
+            {{ current_user.email }}
+        </p>
+
+        <p class="info">
+            <strong>Account:</strong>
+            <span class="status">Active</span>
+        </p>
+    </div>
+
+    <div class="card">
+        <h2>🔐 Change Password</h2>
+
+        <p class="info">
+            Update your password to keep your account secure.
+        </p>
+
+        <form class="password-form"
+              method="POST"
+              action="{{ url_for('settings') }}">
+
+            <label for="current_password">Current Password</label>
+            <input type="password"
+                   id="current_password"
+                   name="current_password"
+                   placeholder="Enter current password"
+                   required>
+
+            <label for="new_password">New Password</label>
+            <input type="password"
+                   id="new_password"
+                   name="new_password"
+                   placeholder="Enter new password"
+                   minlength="8"
+                   required>
+
+            <label for="confirm_password">Confirm New Password</label>
+            <input type="password"
+                   id="confirm_password"
+                   name="confirm_password"
+                   placeholder="Confirm new password"
+                   minlength="8"
+                   required>
+
+            <p class="hint">Your new password must contain at least 8 characters.</p>
+
+            <button type="submit" class="btn">
+                🔒 Update Password
+            </button>
+
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>🎨 Appearance</h2>
+
+        <p class="info">
+            Use the small theme button at the top-right corner to switch between Dark Mode and Light Mode.
+        </p>
+    </div>
+
+    {% if current_user.email.lower() == "sgsanjanapoojary2006@gmail.com" %}
+    <div class="card">
+        <h2>🛠️ Administrator</h2>
+
+        <p class="info">
+            You have administrator access.
+        </p>
+
+        <a href="{{ url_for('admin_verification') }}" class="btn">
+            Open Admin Verification
+        </a>
+    </div>
+    {% endif %}
+
+    <div class="card">
+        <h2>🚪 Account</h2>
+
+        <p class="info">
+            You can log out of your ScamGuard account here.
+        </p>
+
+        <a href="{{ url_for('logout') }}" class="btn logout">
+            Logout
+        </a>
+    </div>
+
+</div>
+
+{% endblock %}

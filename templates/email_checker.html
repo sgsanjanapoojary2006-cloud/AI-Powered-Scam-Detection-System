@@ -1,0 +1,135 @@
+
+{% extends "base.html" %}
+
+{% block title %}Email Checker | ScamGuard{% endblock %}
+
+{% block extra_css %}
+
+.navbar {
+    background: var(--navbar-bg) !important;
+    color: var(--text-color) !important;
+}
+
+.navbar h2,
+.hero h1,
+.tool-card h2,
+.tool-card h1,
+.tool-card h3,
+.tool-card label {
+    color: var(--text-color) !important;
+}
+
+.hero p,
+.tool-card p,
+.tool-card li {
+    color: var(--secondary-text) !important;
+}
+
+.tagline {
+    color: var(--accent-color) !important;
+}
+
+.tool-card {
+    background: var(--card-bg) !important;
+    color: var(--text-color) !important;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 25px;
+}
+
+.tool-card textarea {
+    background: var(--inner-bg) !important;
+    color: var(--text-color) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+.tool-card textarea::placeholder {
+    color: var(--muted-color) !important;
+}
+
+{% endblock %}
+
+{% block content %}
+
+<nav class="navbar">
+    <h2>🛡️ SCAM<span>GUARD</span></h2>
+    <a class="logout-btn" href="{{ url_for('dashboard') }}">Dashboard</a>
+</nav>
+
+<main class="dashboard-container">
+
+    <section class="hero">
+        <p class="tagline">EMAIL SECURITY ANALYSIS</p>
+        <h1>Check Your <span>Email</span></h1>
+        <p>Paste an email below to identify suspicious content and possible scam indicators.</p>
+    </section>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="alert {{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endwith %}
+
+    <div class="tool-card">
+
+        <form method="POST" action="{{ url_for('email_check') }}">
+
+            <label for="email_text">Paste Email Content</label>
+
+            <textarea
+                id="email_text"
+                name="email_text"
+                rows="10"
+                maxlength="10000"
+                placeholder="Paste the complete email here..."
+                required
+                style="width:100%; padding:15px; margin-top:12px; border-radius:8px; box-sizing:border-box;"
+            >{{ checked_email }}</textarea>
+
+            <button type="submit" class="logout-btn" style="margin-top:15px;">
+                Analyze Email
+            </button>
+
+        </form>
+
+    </div>
+
+    {% if result %}
+
+    <div class="tool-card" style="margin-top:25px;">
+
+        <h2>Email Analysis Result</h2>
+
+        <h1>{{ result.risk }}</h1>
+
+        <h2>{{ result.score }}/100</h2>
+
+        <p>Heuristic Risk Score</p>
+
+        <h3>Detection Reasons</h3>
+
+        <ul>
+            {% for reason in result.reasons %}
+                <li>{{ reason }}</li>
+            {% endfor %}
+        </ul>
+
+        <p>
+            Warning: This is a basic rule-based analysis.
+            It cannot confirm whether an email is fraudulent.
+            Never share your OTP, PIN or password through email.
+        </p>
+
+    </div>
+
+    {% endif %}
+
+    <br>
+
+    <a class="logout-btn" href="{{ url_for('dashboard') }}">
+        Back to Dashboard
+    </a>
+
+</main>
+
+{% endblock %}

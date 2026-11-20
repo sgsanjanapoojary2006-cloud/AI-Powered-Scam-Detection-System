@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}ScamGuard{% endblock %}</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        :root {
+            color-scheme: dark;
+            --page-bg: #0b1120;
+            --navbar-bg: #111c32;
+            --card-bg: #111e33;
+            --inner-bg: #0b1527;
+            --border-color: #263852;
+            --text-color: #f8fafc;
+            --muted-color: #94a3b8;
+            --secondary-text: #cbd5e1;
+            --accent-color: #38bdf8;
+        }
+
+        [data-theme="light"] {
+            color-scheme: light;
+            --page-bg: #f1f5f9;
+            --navbar-bg: #ffffff;
+            --card-bg: #ffffff;
+            --inner-bg: #eaf0f7;
+            --border-color: #d5deea;
+            --text-color: #172033;
+            --muted-color: #64748b;
+            --secondary-text: #334155;
+            --accent-color: #0284c7;
+        }
+
+        html, body {
+            min-height: 100%;
+            background: var(--page-bg) !important;
+            color: var(--text-color);
+            transition: background 0.25s, color 0.25s;
+        }
+
+        body {
+            margin: 0;
+        }
+
+        /* SMALL TOP-RIGHT THEME BUTTON */
+
+        .theme-toggle {
+            position: fixed;
+            top: 18px;
+            right: 22px;
+            z-index: 9999;
+
+            width: 38px;
+            height: 38px;
+
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+
+            background: var(--card-bg);
+            color: var(--text-color);
+
+            font-size: 18px;
+            cursor: pointer;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+            transition: 0.2s;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.08);
+        }
+
+        {% block extra_css %}{% endblock %}
+    </style>
+
+    <script>
+        (function () {
+            const savedTheme =
+                localStorage.getItem("scamguard-theme") || "dark";
+
+            document.documentElement.setAttribute(
+                "data-theme", savedTheme
+            );
+        })();
+    </script>
+</head>
+
+<body>
+
+    {% block content %}{% endblock %}
+
+    <button class="theme-toggle"
+            id="themeToggle"
+            type="button"
+            title="Switch theme">
+        ☀️
+    </button>
+
+    <script>
+        const themeButton =
+            document.getElementById("themeToggle");
+
+        function updateThemeButton() {
+            const currentTheme =
+                document.documentElement.getAttribute("data-theme");
+
+            themeButton.textContent =
+                currentTheme === "dark" ? "☀️" : "🌙";
+
+            themeButton.title =
+                currentTheme === "dark"
+                ? "Switch to Light Mode"
+                : "Switch to Dark Mode";
+        }
+
+        themeButton.addEventListener("click", function () {
+            const currentTheme =
+                document.documentElement.getAttribute("data-theme");
+
+            const newTheme =
+                currentTheme === "dark" ? "light" : "dark";
+
+            document.documentElement.setAttribute(
+                "data-theme", newTheme
+            );
+
+            localStorage.setItem("scamguard-theme", newTheme);
+
+            updateThemeButton();
+        });
+
+        updateThemeButton();
+    </script>
+
+    {% block extra_js %}{% endblock %}
+
+</body>
+</html>

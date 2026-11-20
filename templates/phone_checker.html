@@ -1,0 +1,189 @@
+
+{% extends "base.html" %}
+
+{% block title %}Phone Number Checker | ScamGuard{% endblock %}
+
+{% block extra_css %}
+    .navbar {
+        background: var(--navbar-bg) !important;
+        color: var(--text-color) !important;
+    }
+
+    .navbar h2,
+    .hero h1,
+    .tool-card h2,
+    .tool-card h3,
+    .tool-card h4,
+    .tool-card label {
+        color: var(--text-color) !important;
+    }
+
+    .hero p,
+    .tool-card p,
+    .tool-card small,
+    .tool-card li {
+        color: var(--secondary-text) !important;
+    }
+
+    .tool-card {
+        background: var(--card-bg) !important;
+        color: var(--text-color) !important;
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 25px;
+    }
+
+    .tool-card input,
+    .tool-card select,
+    .tool-card textarea {
+        background: var(--inner-bg) !important;
+        color: var(--text-color) !important;
+        border: 1px solid var(--border-color) !important;
+        border-radius: 8px;
+    }
+
+    .tool-card input::placeholder,
+    .tool-card textarea::placeholder {
+        color: var(--muted-color) !important;
+    }
+
+    .tool-card option {
+        background: var(--card-bg);
+        color: var(--text-color);
+    }
+
+    .tool-card div[style*="border"] {
+        border-color: var(--border-color) !important;
+        background: var(--inner-bg);
+    }
+
+    .tagline {
+        color: var(--accent-color) !important;
+    }
+{% endblock %}
+
+{% block content %}
+
+<nav class="navbar">
+    <h2>🛡️ SCAM<span>GUARD</span></h2>
+    <a class="logout-btn" href="{{ url_for('dashboard') }}">Dashboard</a>
+</nav>
+
+<main class="dashboard-container">
+
+    <section class="hero">
+        <p class="tagline">COMMUNITY SCAM REPORTS</p>
+        <h1>Phone Number <span>Checker</span></h1>
+        <p>Search phone numbers to review community-submitted scam reports.</p>
+    </section>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="alert {{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endwith %}
+
+    <div class="tool-card">
+        <h2>Check a Phone Number</h2>
+
+        <form method="POST" action="{{ url_for('phone_check') }}">
+            <label>Enter Phone Number</label>
+
+            <input type="tel" name="phone" value="{{ phone }}"
+                   placeholder="Enter phone number" maxlength="20" required
+                   style="width:100%;padding:14px;box-sizing:border-box;">
+
+            <button type="submit" class="logout-btn" style="margin-top:15px;">
+                Check Number
+            </button>
+        </form>
+    </div>
+
+    {% if phone %}
+    <div class="tool-card" style="margin-top:25px;">
+        <h2>Phone Number Analysis</h2>
+        <h3>{{ phone }}</h3>
+        <h2>{{ total_reports }}</h2>
+        <p>Total Community Reports</p>
+        <h3>{{ risk }}</h3>
+
+        {% if total_reports == 0 %}
+            <p>No verified reports found. This does not prove the number is safe.</p>
+        {% endif %}
+
+        {% if category_summary %}
+            <h3>Reported Scam Categories</h3>
+            <ul>
+                {% for category, count in category_summary %}
+                    <li>{{ category }} — {{ count }} report(s)</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% if reports %}
+            <h3>Report History</h3>
+
+            {% for report in reports %}
+                <div style="border:1px solid #555;padding:15px;margin-top:12px;border-radius:8px;">
+                    <h4>{{ report.category }}</h4>
+                    <p>{{ report.description }}</p>
+                    <small>
+                        Reported by {{ report.reporter.username }}
+                        on {{ report.created_at.strftime('%d-%m-%Y') }}
+                    </small>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <div class="tool-card" style="margin-top:25px;">
+        <h2>🚨 Report a Scam Number</h2>
+        <p>Help other users by reporting suspicious phone numbers.</p>
+
+        <form method="POST" action="{{ url_for('report_phone') }}">
+
+            <label>Phone Number</label>
+
+            <input type="tel" name="phone"
+                   placeholder="Enter suspicious phone number"
+                   maxlength="20" required
+                   style="width:100%;padding:14px;box-sizing:border-box;">
+
+            <br><br>
+
+            <label>Scam Category</label>
+
+            <select name="category" required style="width:100%;padding:14px;">
+                <option value="">Select Category</option>
+                <option value="Scam Call">Scam Call</option>
+                <option value="Fake Bank Call">Fake Bank Call</option>
+                <option value="OTP Fraud">OTP Fraud</option>
+                <option value="Job Scam">Job Scam</option>
+                <option value="Investment Scam">Investment Scam</option>
+                <option value="Delivery Scam">Delivery Scam</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <br><br>
+
+            <label>Describe the Incident</label>
+
+            <textarea name="description" rows="5" minlength="10"
+                      maxlength="1000"
+                      placeholder="Explain what happened..."
+                      required
+                      style="width:100%;padding:14px;box-sizing:border-box;"></textarea>
+
+            <button type="submit" class="logout-btn" style="margin-top:15px;">
+                Submit Scam Report
+            </button>
+        </form>
+    </div>
+
+    <br>
+    <a class="logout-btn" href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+
+</main>
+
+{% endblock %}

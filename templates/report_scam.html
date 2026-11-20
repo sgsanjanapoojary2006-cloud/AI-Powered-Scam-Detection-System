@@ -1,0 +1,451 @@
+
+{% extends "base.html" %}
+
+{% block title %}Report a Scam | ScamGuard{% endblock %}
+
+{% block extra_css %}
+
+* {
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.navbar {
+    height: 75px;
+    padding: 0 7%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--navbar-bg);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.logo {
+    font-size: 23px;
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.logo span {
+    color: var(--accent-color);
+}
+
+.nav-links {
+    display: flex;
+    gap: 25px;
+}
+
+.nav-links a {
+    color: var(--secondary-text);
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: var(--accent-color);
+}
+
+.main-container {
+    width: 90%;
+    max-width: 850px;
+    margin: 45px auto;
+}
+
+.page-heading {
+    margin-bottom: 28px;
+}
+
+.page-heading .tag {
+    display: inline-block;
+    background: var(--inner-bg);
+    color: var(--accent-color);
+    padding: 7px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    margin-bottom: 15px;
+}
+
+.page-heading h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+    color: var(--text-color);
+}
+
+.page-heading p {
+    color: var(--muted-color);
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.form-card {
+    background: var(--card-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+}
+
+.form-section-title {
+    font-size: 19px;
+    margin-bottom: 8px;
+    color: var(--text-color);
+}
+
+.form-description {
+    color: var(--muted-color);
+    font-size: 13px;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+.form-group {
+    margin-bottom: 23px;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.required {
+    color: #f87171;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    background: var(--inner-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 9px;
+    padding: 14px 15px;
+    color: var(--text-color);
+    font-size: 14px;
+    outline: none;
+    transition: 0.3s;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(56,189,248,0.12);
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--muted-color);
+}
+
+select {
+    cursor: pointer;
+}
+
+select option {
+    background: var(--card-bg);
+    color: var(--text-color);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 115px;
+    line-height: 1.6;
+}
+
+.field-hint {
+    color: var(--muted-color);
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+.submit-btn {
+    width: 100%;
+    border: none;
+    border-radius: 9px;
+    padding: 15px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(99,102,241,0.3);
+}
+
+.alert {
+    padding: 13px 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.success {
+    background: #123b30;
+    color: #86efac;
+    border: 1px solid #166534;
+}
+
+.danger {
+    background: #451a1a;
+    color: #fca5a5;
+    border: 1px solid #991b1b;
+}
+
+.notice {
+    display: flex;
+    gap: 12px;
+    background: var(--inner-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 16px;
+    margin-top: 22px;
+}
+
+.notice-icon {
+    font-size: 20px;
+}
+
+.notice p {
+    color: var(--muted-color);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.notice strong {
+    color: var(--text-color);
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 25px;
+    flex-wrap: wrap;
+}
+
+.footer a {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.footer a:hover {
+    color: var(--text-color);
+}
+
+@media(max-width: 600px) {
+    .navbar {
+        padding: 0 5%;
+    }
+
+    .nav-links {
+        gap: 12px;
+    }
+
+    .nav-links a {
+        font-size: 12px;
+    }
+
+    .main-container {
+        width: 92%;
+        margin: 30px auto;
+    }
+
+    .page-heading h1 {
+        font-size: 26px;
+    }
+
+    .form-card {
+        padding: 21px;
+    }
+
+    .footer {
+        flex-direction: column;
+    }
+}
+
+{% endblock %}
+
+{% block content %}
+
+<nav class="navbar">
+
+    <div class="logo">
+        Scam<span>Guard</span>
+    </div>
+
+    <div class="nav-links">
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('my_scam_reports') }}">My Reports</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+
+</nav>
+
+<main class="main-container">
+
+    <div class="page-heading">
+
+        <span class="tag">COMMUNITY SAFETY CENTER</span>
+
+        <h1>Report a Scam</h1>
+
+        <p>
+            Help protect the community by reporting suspicious
+            phone numbers, URLs, messages and emails.
+            Your report can help others stay alert.
+        </p>
+
+    </div>
+
+    <div class="form-card">
+
+        <h2 class="form-section-title">
+            Submit a Scam Report
+        </h2>
+
+        <p class="form-description">
+            Provide accurate information about the suspicious
+            activity. All fields are required.
+        </p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <div class="alert {{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endwith %}
+
+        <form method="POST"
+              action="{{ url_for('report_scam') }}">
+
+            <div class="form-group">
+
+                <label for="report_type">
+                    Scam Type <span class="required">*</span>
+                </label>
+
+                <select name="report_type"
+                        id="report_type"
+                        required>
+
+                    <option value="">Select scam type</option>
+                    <option value="Phone">Phone Number Scam</option>
+                    <option value="URL">Suspicious URL</option>
+                    <option value="Message">SMS / Message Scam</option>
+                    <option value="Email">Email Scam</option>
+
+                </select>
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="target">
+                    Suspicious Phone Number / URL / Message / Email
+                    <span class="required">*</span>
+                </label>
+
+                <textarea
+                    name="target"
+                    id="target"
+                    placeholder="Enter the suspicious phone number, website URL, message or email..."
+                    maxlength="500"
+                    required></textarea>
+
+                <p class="field-hint">
+                    Maximum 500 characters.
+                </p>
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="category">
+                    Scam Category <span class="required">*</span>
+                </label>
+
+                <select name="category"
+                        id="category"
+                        required>
+
+                    <option value="">Select scam category</option>
+                    <option value="Fake Bank Scam">Fake Bank Scam</option>
+                    <option value="OTP Fraud">OTP Fraud</option>
+                    <option value="Job Scam">Job Scam</option>
+                    <option value="Investment Scam">Investment Scam</option>
+                    <option value="Phishing">Phishing</option>
+                    <option value="Lottery Scam">Lottery Scam</option>
+                    <option value="Delivery Scam">Delivery Scam</option>
+                    <option value="Fake Customer Support">Fake Customer Support</option>
+                    <option value="Other">Other</option>
+
+                </select>
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="description">
+                    Describe What Happened
+                    <span class="required">*</span>
+                </label>
+
+                <textarea
+                    name="description"
+                    id="description"
+                    placeholder="Explain what happened, how you received the suspicious call, message or email, and why you believe it is a scam..."
+                    maxlength="1000"
+                    required></textarea>
+
+                <p class="field-hint">
+                    Maximum 1000 characters.
+                </p>
+
+            </div>
+
+            <button type="submit" class="submit-btn">
+                Submit Scam Report
+            </button>
+
+        </form>
+
+        <div class="notice">
+
+            <div class="notice-icon">🛡️</div>
+
+            <p>
+                <strong>Safety Notice</strong><br>
+                Do not include passwords, OTPs, bank PINs or
+                other confidential personal information in your report.
+                Reports are submitted as pending and require review.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="footer">
+
+        <a href="{{ url_for('dashboard') }}">
+            ← Back to Dashboard
+        </a>
+
+        <a href="{{ url_for('my_scam_reports') }}">
+            View My Reports →
+        </a>
+
+    </div>
+
+</main>
+
+{% endblock %}

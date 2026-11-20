@@ -1,0 +1,352 @@
+
+{% extends "base.html" %}
+
+{% block title %}Dashboard | ScamGuard{% endblock %}
+
+{% block extra_css %}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 20px;
+    margin: 25px 0 40px;
+}
+
+.stat-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 22px;
+}
+
+.stat-card h3 {
+    color: var(--muted-color);
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.stat-card h2 {
+    font-size: 30px;
+    color: var(--accent-color);
+}
+
+.stat-card p {
+    color: var(--muted-color);
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+.risk-section {
+    margin-top: 45px;
+    padding: 25px;
+    border-radius: 14px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+}
+
+.risk-section > p {
+    color: var(--muted-color);
+    margin: 10px 0 25px;
+}
+
+.risk-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 18px;
+}
+
+.risk-card {
+    padding: 20px;
+    border-radius: 10px;
+    background: var(--inner-bg);
+    border: 1px solid var(--border-color);
+}
+
+.risk-card h3 {
+    margin-bottom: 12px;
+}
+
+.risk-card p {
+    color: var(--secondary-text);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.low { color: #16a34a; }
+.medium { color: #d97706; }
+.high { color: #dc2626; }
+
+.report-breakdown {
+    margin-top: 30px;
+}
+
+.report-breakdown h3 {
+    margin-bottom: 18px;
+}
+
+.breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 13px 15px;
+    margin-bottom: 10px;
+    background: var(--inner-bg);
+    border-radius: 8px;
+    color: var(--secondary-text);
+}
+
+.breakdown-row strong {
+    color: var(--accent-color);
+}
+
+.disclaimer {
+    margin-top: 30px;
+    color: var(--muted-color);
+    line-height: 1.6;
+    text-align: center;
+}
+
+.navbar {
+    background: var(--navbar-bg);
+    color: var(--text-color);
+}
+
+@media(max-width: 600px) {
+    .risk-section {
+        padding: 17px;
+    }
+}
+
+{% endblock %}
+
+
+{% block content %}
+
+<nav class="navbar">
+    <h2>🛡️ SCAM<span>GUARD</span></h2>
+
+    <div>
+        <span class="welcome">Welcome, {{ username }}</span>
+
+        <a class="logout-btn" href="{{ url_for('settings') }}">
+            ⚙️ Settings
+        </a>
+
+        <a class="logout-btn" href="{{ url_for('logout') }}">
+            Logout
+        </a>
+    </div>
+</nav>
+
+<main class="dashboard-container">
+
+    <section class="hero">
+        <p class="tagline">YOUR DIGITAL SAFETY PARTNER</p>
+
+        <h1>Stay Alert. <span>Stay Protected.</span></h1>
+
+        <p>
+            Detect, analyse and report suspicious online activities
+            using intelligent scam detection tools.
+        </p>
+    </section>
+
+    <h2 class="section-title">Your Scam Report Overview</h2>
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <h3>📋 Total Reports</h3>
+            <h2>{{ total_reports }}</h2>
+            <p>All reports submitted by you</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>⏳ Pending Reports</h3>
+            <h2>{{ pending_reports }}</h2>
+            <p>General reports awaiting review</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>📱 Phone Reports</h3>
+            <h2>{{ phone_count }}</h2>
+            <p>Phone-related reports</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>🔗 URL Reports</h3>
+            <h2>{{ url_count }}</h2>
+            <p>Suspicious website reports</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>💬 Message Reports</h3>
+            <h2>{{ message_count }}</h2>
+            <p>Suspicious message reports</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>📧 Email Reports</h3>
+            <h2>{{ email_count }}</h2>
+            <p>Suspicious email reports</p>
+        </div>
+
+    </div>
+
+    <h2 class="section-title">Scam Detection Tools</h2>
+
+    <div class="tools-grid">
+
+        <div class="tool-card">
+            <div class="tool-icon">📱</div>
+            <h3>Phone Number Detection</h3>
+            <p>Check suspicious phone numbers and review community scam reports.</p>
+            <a class="logout-btn" href="{{ url_for('phone_check') }}">
+                Check Phone Number
+            </a>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-icon">🔗</div>
+            <h3>Suspicious URL Detection</h3>
+            <p>Analyse website links and identify potentially dangerous URLs.</p>
+            <a class="logout-btn" href="{{ url_for('url_check') }}">
+                Check URL
+            </a>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-icon">💬</div>
+            <h3>SMS / Message Detection</h3>
+            <p>Analyse suspicious SMS and WhatsApp messages for scam indicators.</p>
+            <a class="logout-btn" href="{{ url_for('message_check') }}">
+                Check Message
+            </a>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-icon">📧</div>
+            <h3>Email Scam Detection</h3>
+            <p>Identify phishing emails and suspicious email content.</p>
+            <a class="logout-btn" href="{{ url_for('email_check') }}">
+                Check Email
+            </a>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-icon">🚨</div>
+            <h3>Report a Scam</h3>
+            <p>Report suspicious phone numbers, URLs, SMS messages and emails.</p>
+            <a class="logout-btn" href="{{ url_for('report_scam') }}">
+                Submit Report
+            </a>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-icon">📋</div>
+            <h3>My Reports</h3>
+            <p>View your submitted scam reports and track their status.</p>
+            <a class="logout-btn" href="{{ url_for('my_scam_reports') }}">
+                View My Reports
+            </a>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-icon">📊</div>
+            <h3>Risk Analysis</h3>
+            <p>View your report statistics and understand different risk levels.</p>
+            <a class="logout-btn" href="#risk-analysis">
+                View Risk Analysis
+            </a>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-icon">🛡️</div>
+            <h3>Admin Verification</h3>
+            <p>Review and verify scam reports submitted by users.</p>
+            <a class="logout-btn" href="{{ url_for('admin_verification') }}">
+                Admin Panel
+            </a>
+        </div>
+
+    </div>
+
+    <section id="risk-analysis" class="risk-section">
+
+        <h2>📊 Risk Analysis Overview</h2>
+
+        <p>
+            Understand the different risk levels used by ScamGuard
+            to communicate suspicious activity.
+        </p>
+
+        <div class="risk-grid">
+
+            <div class="risk-card">
+                <h3 class="low">🟢 LOW RISK</h3>
+                <p>
+                    Fewer suspicious indicators were detected.
+                    Stay cautious and verify unexpected requests.
+                </p>
+            </div>
+
+            <div class="risk-card">
+                <h3 class="medium">🟠 MEDIUM RISK</h3>
+                <p>
+                    Some suspicious indicators were detected.
+                    Verify the sender, website or request carefully.
+                </p>
+            </div>
+
+            <div class="risk-card">
+                <h3 class="high">🔴 HIGH RISK</h3>
+                <p>
+                    Strong suspicious indicators were detected.
+                    Avoid sharing personal or financial information.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="report-breakdown">
+
+            <h3>Your Report Breakdown</h3>
+
+            <div class="breakdown-row">
+                <span>📱 Phone Reports</span>
+                <strong>{{ phone_count }}</strong>
+            </div>
+
+            <div class="breakdown-row">
+                <span>🔗 URL Reports</span>
+                <strong>{{ url_count }}</strong>
+            </div>
+
+            <div class="breakdown-row">
+                <span>💬 Message Reports</span>
+                <strong>{{ message_count }}</strong>
+            </div>
+
+            <div class="breakdown-row">
+                <span>📧 Email Reports</span>
+                <strong>{{ email_count }}</strong>
+            </div>
+
+            <div class="breakdown-row">
+                <span>📋 Total Reports</span>
+                <strong>{{ total_reports }}</strong>
+            </div>
+
+        </div>
+
+    </section>
+
+    <p class="disclaimer">
+        ScamGuard predictions are risk indicators, not guarantees.
+        Report statistics are based on your submitted reports,
+        not actual AI detection history. Always verify suspicious
+        requests independently.
+    </p>
+
+</main>
+
+{% endblock %}

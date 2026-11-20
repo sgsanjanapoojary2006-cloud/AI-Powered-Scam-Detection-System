@@ -1,0 +1,132 @@
+
+{% extends "base.html" %}
+
+{% block title %}URL Checker | ScamGuard{% endblock %}
+
+{% block extra_css %}
+
+.navbar {
+    background: var(--navbar-bg) !important;
+    color: var(--text-color) !important;
+}
+
+.navbar h2,
+.container h1,
+.container h2,
+.container h3,
+.container label {
+    color: var(--text-color) !important;
+}
+
+.container p,
+.container li {
+    color: var(--secondary-text) !important;
+}
+
+.container {
+    background: var(--page-bg);
+    color: var(--text-color);
+}
+
+.container form,
+.result-card {
+    background: var(--card-bg) !important;
+    color: var(--text-color) !important;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 25px;
+}
+
+.container input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px;
+    background: var(--inner-bg) !important;
+    color: var(--text-color) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 8px;
+}
+
+.container input::placeholder {
+    color: var(--muted-color) !important;
+}
+
+.container a {
+    color: var(--accent-color);
+}
+
+{% endblock %}
+
+{% block content %}
+
+<nav class="navbar">
+    <h2>🛡️ ScamGuard</h2>
+    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+</nav>
+
+<div class="container">
+
+    <h1>URL Phishing Detection</h1>
+    <p>Enter a website URL to check for suspicious patterns.</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="alert {{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('url_check') }}">
+
+        <label for="url">Website URL</label>
+
+        <input
+            type="text"
+            id="url"
+            name="url"
+            placeholder="https://example.com"
+            value="{{ checked_url }}"
+            maxlength="2048"
+            required
+        >
+
+        <button type="submit">Check URL</button>
+
+    </form>
+
+    {% if result %}
+
+    <div class="result-card">
+
+        <h2>URL Analysis Result</h2>
+
+        <h3>{{ result.risk }}</h3>
+
+        <h2>{{ result.score }}/100</h2>
+
+        <p>Heuristic Risk Score</p>
+
+        <h3>Detection Reasons</h3>
+
+        <ul>
+            {% for reason in result.reasons %}
+                <li>{{ reason }}</li>
+            {% endfor %}
+        </ul>
+
+        <p>
+            Warning: This is a basic rule-based analysis.
+            It cannot confirm whether a website is safe or fraudulent.
+            Do not enter passwords, OTPs or banking details on suspicious websites.
+        </p>
+
+    </div>
+
+    {% endif %}
+
+    <br>
+
+    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+
+</div>
+
+{% endblock %}

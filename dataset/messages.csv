@@ -1,0 +1,42 @@
+
+message,label
+"Your bank account will be blocked. Verify your KYC immediately using this link.",scam
+"Congratulations! You won a free iPhone. Pay a processing fee to claim your prize.",scam
+"Your parcel is on hold. Pay the delivery fee using this link.",scam
+"Your electricity connection will be disconnected today. Pay immediately.",scam
+"Your ATM card is blocked. Share your PIN to reactivate it.",scam
+"Your account has suspicious activity. Send your OTP to verify your identity.",scam
+"Earn 50000 per week from home. Pay a registration fee today.",scam
+"Your KYC has expired. Update your banking details immediately.",scam
+"Claim your lottery prize by sharing your bank account details.",scam
+"Your mobile number will be deactivated. Click this link now.",scam
+"Your bank account will be permanently blocked in two hours. Enter your card number, CVV, PIN and OTP at this link.",scam
+"Your package is stuck. Pay a small fee and enter your card details to release it.",scam
+"Police have issued a warrant against you. Pay this fine immediately through this link.",scam
+"Your UPI account is frozen. Share your UPI PIN to unlock it.",scam
+"Your cashback is waiting. Send your OTP to receive the money.",scam
+"Work from home and earn thousands daily. Pay an advance fee to start.",scam
+"Your credit card reward points are expiring. Enter your card details to redeem them.",scam
+"Your bank security team needs your password and OTP to prevent account closure.",scam
+"Your SIM card will be suspended today. Click here and enter your personal details.",scam
+"Your tax refund is approved. Pay a verification charge to receive your refund.",scam
+"Your college assignment submission deadline is tomorrow.",safe
+"Your electricity bill payment was successful. Thank you.",safe
+"Your order has been shipped and will arrive tomorrow.",safe
+"Your salary has been credited to your bank account.",safe
+"Your appointment is scheduled for Monday at 10 AM.",safe
+"Please attend the project meeting at 2 PM today.",safe
+"Your library book is due for return next week.",safe
+"Your payment of 500 rupees was successful.",safe
+"Your exam timetable has been published on the college portal.",safe
+"Your food delivery order is being prepared.",safe
+"Thank you for registering for the college workshop.",safe
+"Your monthly statement is now available in your official banking app.",safe
+"Your recharge was completed successfully.",safe
+"Your class attendance has been updated.",safe
+"Your train ticket booking is confirmed.",safe
+"Please bring your laptop for tomorrow's lab session.",safe
+"Your subscription renewal was successful.",safe
+"The project review has been moved to Friday.",safe
+"Your application has been received successfully.",safe
+"Your friend has shared the notes for the next class.",safe

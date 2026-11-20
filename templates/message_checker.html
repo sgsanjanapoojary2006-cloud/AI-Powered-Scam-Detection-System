@@ -1,0 +1,164 @@
+
+{% extends "base.html" %}
+
+{% block title %}Message Checker | ScamGuard{% endblock %}
+
+{% block extra_css %}
+
+.navbar {
+    background: var(--navbar-bg) !important;
+    color: var(--text-color) !important;
+}
+
+.navbar h2,
+.hero h1,
+.tool-card h2,
+.tool-card h3,
+.tool-card label {
+    color: var(--text-color) !important;
+}
+
+.hero p,
+.tool-card p,
+.disclaimer {
+    color: var(--secondary-text) !important;
+}
+
+.tagline {
+    color: var(--accent-color) !important;
+}
+
+.tool-card {
+    background: var(--card-bg) !important;
+    color: var(--text-color) !important;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 25px;
+}
+
+.tool-card textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 15px;
+    background: var(--inner-bg) !important;
+    color: var(--text-color) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 7px;
+}
+
+.tool-card textarea::placeholder {
+    color: var(--muted-color) !important;
+}
+
+.disclaimer {
+    text-align: center;
+    margin-top: 25px;
+}
+
+{% endblock %}
+
+{% block content %}
+
+<nav class="navbar">
+    <h2>🛡️ SCAM<span>GUARD</span></h2>
+
+    <div>
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        &nbsp;&nbsp;
+        <a class="logout-btn" href="{{ url_for('logout') }}">Logout</a>
+    </div>
+</nav>
+
+<main class="dashboard-container">
+
+    <section class="hero">
+        <p class="tagline">ARTIFICIAL INTELLIGENCE</p>
+
+        <h1>AI Message <span>Checker</span></h1>
+
+        <p>
+            Paste a suspicious SMS or WhatsApp message
+            to analyse its potential scam risk.
+        </p>
+    </section>
+
+    <section class="tool-card" style="margin-top: 25px;">
+
+        <h2>Enter Your Message</h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <div class="alert {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endwith %}
+
+        <form method="POST">
+
+            <label for="message">Suspicious Message</label>
+
+            <textarea
+                id="message"
+                name="message"
+                rows="7"
+                maxlength="5000"
+                placeholder="Paste your SMS or WhatsApp message here..."
+                required
+            >{{ checked_message }}</textarea>
+
+            <button type="submit">ANALYSE MESSAGE</button>
+
+        </form>
+    </section>
+
+    {% if result %}
+
+    <section class="tool-card" style="margin-top: 25px;">
+
+        <h2>Detection Result</h2>
+
+        <h3 style="margin-top: 20px;">
+            Classification:
+            {{ result.prediction | upper }}
+        </h3>
+
+        <h3 style="margin-top: 15px;">
+            Risk Level:
+            <span style="color:
+                {% if result.risk_color == 'danger' %}
+                    #ff4545
+                {% elif result.risk_color == 'warning' %}
+                    #ffc04d
+                {% else %}
+                    #69db91
+                {% endif %}
+            ">
+                {{ result.risk }}
+            </span>
+        </h3>
+
+        <p style="margin-top: 15px;">
+            Model scam score: {{ result.score }}%
+        </p>
+
+        <p style="margin-top: 15px;">
+            This score is the model's estimated scam probability,
+            not a verified measure of actual fraud risk.
+        </p>
+
+    </section>
+
+    {% endif %}
+
+    <p class="disclaimer">
+        AI predictions are not guarantees. Never share OTPs,
+        passwords, PINs or banking details with unknown people.
+        Verify suspicious messages independently.
+    </p>
+
+    <p style="text-align: center; margin-top: 20px;">
+        <a href="{{ url_for('dashboard') }}">← Back to Dashboard</a>
+    </p>
+
+</main>
+
+{% endblock %}
